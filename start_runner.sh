@@ -11,4 +11,3 @@ tar xzf ./actions-runner-osx-x64-2.289.1.tar.gz
 newgrp docker
 
 ./run.sh
-~
