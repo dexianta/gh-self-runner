@@ -16,20 +16,31 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 ######################
 # install miniconda
 ######################
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-sh Miniconda3-latest-Linux-x86_64.sh
+set +e
+FILE="/tmp/miniconda.sh"
+if [[ -f "$FILE" ]]; then
+    echo "$FILE exists."
+else
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O $FILE
+    bash $FILE -b
+fi
 ######################
 # install golang
 ######################
-wget https://go.dev/dl/go1.17.8.linux-amd64.tar.gz
+GO_FILE="./go1.17.8.linux-amd64.tar.gz"
+if [[ -f "$GO_FILE" ]]; then
+    echo "GO FILE EXISTS"
+else
+    wget https://go.dev/dl/go1.17.8.linux-amd64.tar.gz
+fi
 sudo rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.8.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc 
 
 
 ######################
 # install make
 ######################
-sudo apt install make
+sudo apt install make 
 
 ######################
 # install swaggo
