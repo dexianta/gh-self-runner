@@ -38,9 +38,9 @@ echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
 
 
 ######################
-# install make
+# install build essential
 ######################
-sudo apt install make 
+sudo apt install build-essential
 
 ######################
 # install swaggo
