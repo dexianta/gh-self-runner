@@ -6,6 +6,8 @@ echo "starting runner"
 echo "runner_name: $runner_name"
 echo "token: $token"
 
+export PATH=$HOME/go/bin:$PATH
+
 mkdir runner-"$runner_name" && cd runner-"$runner_name"
 
 curl -o actions-runner-linux-x64-2.290.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.290.1/actions-runner-linux-x64-2.290.1.tar.gz

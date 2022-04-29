@@ -36,6 +36,7 @@ ENV PATH $PATH:$HOME/go/bin
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 
 
+
 ######################
 ## open jdk 11
 ######################
