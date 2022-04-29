@@ -2,49 +2,8 @@ FROM ubuntu:latest
 
 RUN apt-get update \
     && apt-get install -y ca-certificates curl gnupg lsb-release build-essential \
-    && apt-get install -y docker.io \
+    && apt-get install -y docker.io wget \
     && rm -rf /var/lib/apt/lists/*
-
-
-######################
-## pyenv 3.8.x
-######################
-ARG PYTHON_VERSION=3.8.12 ENV_NAME=benshi
-
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8  PYENV_ROOT=$HOME/.pyenv \
-    DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificates curl git make build-essential \
-    libssl-dev zlib1g-dev libbz2-dev \
-    wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libreadline-dev \
-    libsqlite3-dev tzdata && apt-get clean
-
-# pyenv
-RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT && \
-    cd $PYENV_ROOT && git pull && src/configure && make -C src
-
-# pyenv-virtualenv
-RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $PYENV_ROOT/plugins/pyenv-virtualenv
-
-ENV PATH=$PYENV_ROOT/bin:$PATH
-RUN echo $PATH
-
-COPY requirements.txt .
-
-RUN eval "$(pyenv init --path)" && \
-    eval "$(pyenv init -)" && pyenv install $PYTHON_VERSION
-RUN eval "$(pyenv init --path)" && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)" && \
-    pyenv virtualenv $PYTHON_VERSION benshi && pyenv activate benshi && pip install --upgrade pip && \
-    pip install -r requirements.txt
-
-# setup bashrc
-RUN echo 'eval "$(pyenv init --path)"' >> ~/.bash_profile
-RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
-RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
-RUN echo 'eval "$(pyenv init --path)"' >> ~/.profile
-RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-RUN echo 'pyenv activate benshi' >> ~/.bashrc
-
 
 
 ######################
@@ -69,6 +28,35 @@ RUN apt-get update && \
     apt-get clean;
 
 
+
+######################
+## pyenv 3.8.x
+######################
+ARG PYTHON_VERSION=3.8.12 ENV_NAME=benshi
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 PYENV_ROOT=/.pyenv \
+    DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update --fix-missing && apt-get install -y bzip2 ca-certificates curl git make build-essential \
+    libssl-dev zlib1g-dev libbz2-dev \
+    wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libreadline-dev \
+    libsqlite3-dev tzdata && apt-get clean
+
+# pyenv
+RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT && \
+    cd $PYENV_ROOT && git pull && src/configure && make -C src
+
+# pyenv-virtualenv
+RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $PYENV_ROOT/plugins/pyenv-virtualenv
+
+ENV PATH=$PYENV_ROOT/bin:$PATH
+RUN echo $PATH
+
+COPY requirements.txt .
+
+RUN eval "$(pyenv init --path)" && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)" && \
+    pyenv install $PYTHON_VERSION && pyenv virtualenv $PYTHON_VERSION benshi && pyenv activate benshi && \
+    pip install --upgrade pip && pip install -r requirements.txt
 
 ######################
 ## entrypoint

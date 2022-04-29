@@ -1,6 +1,13 @@
 #!/bin/bash
+
 runner_name=$1
 token=$2
+
+export PYENV_ROOT="/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+pyenv activate benshi
 
 echo "starting runner"
 echo "runner_name: $runner_name"
