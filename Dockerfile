@@ -32,6 +32,8 @@ RUN wget https://go.dev/dl/go1.17.9.linux-amd64.tar.gz \
 
 ENV PATH $PATH:/usr/local/go/bin
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
 
 ######################
 ## open jdk 11
