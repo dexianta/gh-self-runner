@@ -5,8 +5,8 @@ This script is to setup a machine as self-hosted github action runner for Linux 
 # Get started
 To set up a runner, first build the image, then run the image with 2 parameters, first one is the suffix of the runner, second is the token from github. e.g.
 
-`docker build -t runner:latest -f Dockerfile .`
-`docker run runner:latest <runner_suffix> <token>`
+`docker build -t runner:latest -f Dockerfile .`  
+`docker run -v /var/run/docker.sock:/var/run/docker.soc runner:<tag> <runner_suffix> <token>`
 
 # Python builds
 
