@@ -1,13 +1,12 @@
-# runner_script
+# Github runner
 
-This script is to setup a machine as self-hosted github action runner for Linux machine
+This repo composes of the docker image as well as the script to run github action runner on our own computer
 
-# Get started
-To set up a runner, first build the image, then run the image with 2 parameters, first one is the suffix of the runner, second is the token from github. e.g.
+## Workflow
+- 1) Prepare the worker environment by `./prepare_worker.sh <suffix_of_worker> <runner_token_from_github>`
+- 2) `./start_container.sh <runner_suffix>`
 
-`docker build -t runner:latest -f Dockerfile .`  
-`docker run -v /var/run/docker.sock:/var/run/docker.sock --network host runner:<tag> <runner_suffix> <token>`
+e.g. `./prepare_worker.sh 101 XXXXXXXX`, `./start_container.sh 101`. this will create a worker with the name of `runner-101`
 
 # Python builds
-
 For Python builds, we use Python 3.8.x and openjdk-11 (which is needed for pyspark and should be configured as the default).
