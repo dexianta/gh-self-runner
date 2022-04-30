@@ -64,9 +64,11 @@ RUN eval "$(pyenv init --path)" && eval "$(pyenv init -)" && eval "$(pyenv virtu
 USER root
 
 COPY start.sh .
-RUN chmod u+x start.sh
+RUN chmod u+x start.sh 
+RUN mkdir -p /runner
 
 ENV RUNNER_ALLOW_RUNASROOT 1
+
 
 ENTRYPOINT ["./start.sh"]
 

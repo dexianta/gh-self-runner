@@ -1,28 +1,10 @@
 #!/bin/bash
-
-runner_name=$1
-token=$2
-
 export PYENV_ROOT="/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 pyenv activate benshi
 
-echo "starting runner"
-echo "runner_name: $runner_name"
-echo "token: $token"
-
 export PATH=$HOME/go/bin:$PATH
 
-mkdir runner-"$runner_name" && cd runner-"$runner_name"
-
-curl -o actions-runner-linux-x64-2.290.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.290.1/actions-runner-linux-x64-2.290.1.tar.gz
-echo "2b97bd3f4639a5df6223d7ce728a611a4cbddea9622c1837967c83c86ebb2baa  actions-runner-linux-x64-2.290.1.tar.gz" | shasum -a 256 -c
-tar xzf ./actions-runner-linux-x64-2.290.1.tar.gz
-
-# more steps need to be taken here
-./config.sh --url https://github.com/benshi-ai --token $token --work _work --name $runner_name --labels self-hosted --runnergroup default --replace
-
-./run.sh
-
+cd /runner && ./run.sh
