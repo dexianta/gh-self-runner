@@ -1,12 +1,12 @@
 #!/bin/bash
-runner=$1
-dir="$HOME/runners/$runner"
+suffix=$1
+dir="$HOME/runners/runner-$suffix"
 echo "$dir"
 
 if [ -d "$dir" ]; then
 	echo "valid runner"
 else
-	echo "invalid runner"
+	echo "invalid runner: $dir"
 	exit 1
 fi
 
