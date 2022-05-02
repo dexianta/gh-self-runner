@@ -16,5 +16,6 @@ echo "-------- runner container ----------"
 docker run -v /var/run/docker.sock:/var/run/docker.sock \
 	-v $HOME/go/pkg:/root/go/pkg \
 	-v "$dir":/runner \
+	--name $suffix \
 	--network host \
 	runner:latest 
