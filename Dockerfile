@@ -7,11 +7,11 @@ RUN apt-get update \
 
 
 ######################
-## golang 1.17
+## golang 1.18
 ######################
-RUN wget https://go.dev/dl/go1.17.9.linux-amd64.tar.gz \
+RUN wget https://go.dev/dl/go1.18.2.linux-amd64.tar.gz \
 	&& rm -rf /usr/local/go \
-	&& tar -C /usr/local -xzf go1.17.9.linux-amd64.tar.gz
+	&& tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz
 
 ENV PATH $PATH:/usr/local/go/bin
 ENV PATH $PATH:$HOME/go/bin
