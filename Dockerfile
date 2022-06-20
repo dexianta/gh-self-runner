@@ -19,6 +19,13 @@ ENV PATH $PATH:$HOME/go/bin
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 
 
+######################
+## postgresql
+######################
+RUN apt-get update && \
+    apt-get install -y libpq-dev && \
+    apt-get clean;
+
 
 ######################
 ## open jdk 11
