@@ -5,17 +5,19 @@ RUN apt-get update \
     && apt-get install -y docker.io wget \
     && rm -rf /var/lib/apt/lists/*
 
+ENV DEBIAN_FRONTEND noninteractive
 
+ARG token
 ARG arch
 ENV arch=$arch
 ######################
 ## golang 1.18
 ######################
-RUN if [ "$arch" = 'Linux' ]; then \
+RUN if [ "$arch" = 'x64' ]; then \
         wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz \
         && rm -rf /usr/local/go \
         && tar -C /usr/local -xzf go1.20.4.linux-amd64.tar.gz; \
-    elif [ "$arch" = 'Darwin' ]; then \
+    elif [ "$arch" = 'arm64' ]; then \
         wget https://go.dev/dl/go1.20.4.linux-arm64.tar.gz \
         && rm -rf /usr/local/go \
         && tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz; \
@@ -29,14 +31,12 @@ ENV PATH $PATH:$HOME/go/bin
 
 RUN go version
 
-
-######################
-## postgresql
-######################
-RUN apt-get update && \
-    apt-get install -y libpq-dev && \
-    apt-get clean;
-
+RUN apt-get update --fix-missing && \
+    apt-get install -y sudo bzip2 ca-certificates curl git jq make build-essential postgresql-client tcl \
+    libssl-dev zlib1g-dev libbz2-dev nodejs \
+    wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libreadline-dev \
+    libsqlite3-dev tzdata && \
+    apt-get clean
 
 
 ######################
@@ -46,11 +46,6 @@ ARG PYTHON_VERSION=3.10.11 ENV_NAME=runner
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 PYENV_ROOT=/.pyenv \
     DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update --fix-missing && apt-get install -y bzip2 ca-certificates curl git make build-essential \
-    libssl-dev zlib1g-dev libbz2-dev \
-    wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libreadline-dev \
-    libsqlite3-dev tzdata && apt-get clean
 
 # pyenv
 RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT && \
