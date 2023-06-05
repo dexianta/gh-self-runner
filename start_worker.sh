@@ -11,7 +11,15 @@ else
 fi
 
 echo "-------- building image ----------"
-docker build -t runner:latest -f Dockerfile .
+if [ $(uname) = 'Linux' ]; then
+  docker build --platform linux/amd64 --build-arg='arch=Linux' -t runner:latest -f Dockerfile .
+elif [ "$(uname)" = 'Darwin' ]; then
+  docker build --platform linux/arm64 --build-arg='arch=Darwin' -t runner:latest -f Dockerfile .
+else
+  echo "invalid arch"
+  exit 1
+fi
+
 echo "-------- runner container ----------"
 docker run -v /var/run/docker.sock:/var/run/docker.sock \
 	-v $HOME/go/pkg:/root/go/pkg \
