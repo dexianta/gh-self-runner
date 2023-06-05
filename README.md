@@ -3,10 +3,8 @@
 This repo composes of the docker image as well as the script to run github action runner on our own computer
 
 ## Workflow
-- 1) Prepare the worker environment by `./prepare_worker.sh <suffix_of_worker> <runner_token_from_github>`
-- 2) `./start_worker.sh <runner_suffix>`
+`./start_worker.sh <runner name> <token (optional)>`\
+when token is provided, `start_worker.sh` will setup a runner by download & config the runner binary. Otherwise it starts the existing runner normally.\
 
-e.g. `./prepare_worker.sh 101 XXXXXXXX`, `./start_worker.sh 101`. this will create a worker with the name of `runner-101`
+It supports both arm64 and x64.
 
-# Python builds
-For Python builds, we use Python 3.8.x and openjdk-11 (which is needed for pyspark and should be configured as the default).
