@@ -11,7 +11,7 @@ ARG token
 ARG arch
 ENV arch=$arch
 ######################
-## golang 1.18
+## golang
 ######################
 RUN if [ "$arch" = 'x64' ]; then \
         wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz \
@@ -40,28 +40,9 @@ RUN apt-get update --fix-missing && \
 
 
 ######################
-## pyenv 3.8.x
+## misc
 ######################
-ARG PYTHON_VERSION=3.10.11 ENV_NAME=runner
-
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 PYENV_ROOT=/.pyenv \
-    DEBIAN_FRONTEND=noninteractive
-
-# pyenv
-RUN git clone https://github.com/pyenv/pyenv.git $PYENV_ROOT && \
-    cd $PYENV_ROOT && git pull && src/configure && make -C src
-
-# pyenv-virtualenv
-RUN git clone https://github.com/pyenv/pyenv-virtualenv.git $PYENV_ROOT/plugins/pyenv-virtualenv
-
-ENV PATH=$PYENV_ROOT/bin:$PATH
-RUN echo $PATH
-
-COPY requirements.txt .
-
-RUN eval "$(pyenv init --path)" && eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)" && \
-    pyenv install $PYTHON_VERSION && pyenv virtualenv $PYTHON_VERSION runner && pyenv activate runner && \
-    pip install --upgrade pip 
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 ######################
 ## entrypoint
@@ -70,7 +51,7 @@ USER root
 
 COPY start.sh .
 RUN chmod u+x start.sh 
-RUN mkdir -p /runner
+RUN mkdir -p /runner # mount to the host machine's runner state files
 
 ENV RUNNER_ALLOW_RUNASROOT 1
 
