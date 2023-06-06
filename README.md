@@ -12,3 +12,6 @@ State files (`_work`) is persisted on the host machine (under `runners/` folder 
 - volume mounted to local go pkg folder
 - etc (can be extended to other usecase, to acchieve more caching)
 
+## Issue to solve
+building on arm64 but pushing to amd64 environment
+
