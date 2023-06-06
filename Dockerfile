@@ -1,11 +1,12 @@
 FROM ubuntu:latest
 
-RUN apt-get update \
-    && apt-get install -y ca-certificates curl gnupg lsb-release build-essential \
-    && apt-get install -y docker.io wget \
-    && rm -rf /var/lib/apt/lists/*
-
+USER root
 ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update --fix-missing 
+RUN apt-get install -y ca-certificates sudo git jq make curl gnupg postgresql-client lsb-release build-essential 
+RUN apt-get install -y nodejs tzdata docker.io wget
+
 
 ARG token
 ARG arch
@@ -31,14 +32,6 @@ ENV PATH $PATH:$HOME/go/bin
 
 RUN go version
 
-RUN apt-get update --fix-missing && \
-    apt-get install -y sudo bzip2 ca-certificates curl git jq make build-essential postgresql-client tcl \
-    libssl-dev zlib1g-dev libbz2-dev nodejs \
-    wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev libreadline-dev \
-    libsqlite3-dev tzdata && \
-    apt-get clean
-
-
 ######################
 ## misc
 ######################
@@ -47,8 +40,6 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ######################
 ## entrypoint
 ######################
-USER root
-
 COPY start.sh .
 RUN chmod u+x start.sh 
 RUN mkdir -p /runner # mount to the host machine's runner state files
