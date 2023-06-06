@@ -12,6 +12,11 @@ State files (`_work`) is persisted on the host machine (under `runners/` folder 
 - volume mounted to local go pkg folder
 - etc (can be extended to other usecase, to acchieve more caching)
 
+## Tips
+Dealing with python version without using python base image can be challenging, it's recommended to invoke any work flow 
+that you might have by runnign a separate docker process within(with a python base image, preferrably with all the dependency installed) for python specific task (testing python program etc), 
+instead of using python interpreter directly
+
 ## Issue to solve
 building on arm64 but pushing to amd64 environment
 

@@ -5,7 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update --fix-missing 
 RUN apt-get install -y ca-certificates sudo git jq make curl gnupg postgresql-client lsb-release build-essential 
-RUN apt-get install -y nodejs tzdata docker.io wget
+RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+RUN apt-get install -y nodejs tzdata docker.io wget libicu-dev
 
 
 ARG token
