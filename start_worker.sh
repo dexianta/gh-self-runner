@@ -2,6 +2,7 @@
 name=$1
 token=$2
 
+set -e
 arch=$(uname -m | sed 's/x86_64/x64/')
 git_root=$(git rev-parse --show-toplevel)
 dir="$git_root/runners/$name"
