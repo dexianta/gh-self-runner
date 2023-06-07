@@ -9,25 +9,27 @@ git_root=$(git rev-parse --show-toplevel)
 dir="$git_root/runners/$name"
 echo "$dir"
 
-# if token is not empty, that mean we want to setup a new folder
-if [ -n "$token" ]; then
-  # download the binary
-  echo "download runner binary at $dir"
-   
-  rm -rf "$dir/*"
-  mkdir -p $dir
-  cd $dir
-  echo "== pwd: $(pwd)"
+bin_dir="$git_root/runner-bin"
+
+if [ ! -d $bin_dir ]; then 
+  mkdir $bin_dir
+fi
+
+if [ -z "$(ls -l $bin_dir)" ]; then 
+  cd $bin_dir
   if [ "$arch" == 'x64' ]; then
-    curl -o actions-runner-linux-x64-2.304.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-linux-x64-2.304.0.tar.gz
-    tar xzf ./actions-runner-linux-x64-2.304.0.tar.gz
-  elif [ "$arch" == 'arm64' ]; then
-    curl -o actions-runner-linux-arm64-2.304.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-linux-arm64-2.304.0.tar.gz
-    tar xzf ./actions-runner-linux-arm64-2.304.0.tar.gz
+    curl -o bin.tar.gz -L https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-linux-x64-2.304.0.tar.gz
   else
-    echo "unknow arch: $arch"
+    echo "unsupported arch: $arch"
     exit 1
   fi
+fi
+
+# if token is not empty, that mean we want to setup a new folder
+if [ -n "$token" ]; then
+  rm -rf "$dir/*"
+  mkdir -p $dir
+  tar xzf $bin_dir/bin.tar.gz -C $dir
 fi
 
 
@@ -36,9 +38,6 @@ cd $git_root
 if [ "$arch" = 'x64' ]; then
   echo 'building for amd64...'
   docker build --platform linux/amd64 --build-arg='arch=x64' -t runner:latest -f Dockerfile .
-elif [ "$arch" = 'arm64' ]; then
-  echo 'building for arm64..'
-  docker build --platform linux/arm64 --build-arg='arch=arm64' -t runner:latest -f Dockerfile .
 else
   echo "invalid arch"
   exit 1
