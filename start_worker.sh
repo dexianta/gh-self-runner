@@ -11,19 +11,19 @@ echo "$dir"
 
 bin_dir="$git_root/runner-bin"
 
+if [ $arch != 'x64' ]; then
+  echo 'can only run on linux/amd64'
+  exit 1
+fi
+
 if [ ! -d $bin_dir ]; then 
   mkdir $bin_dir
 fi
 
-if [ -z "$(ls -l $bin_dir)" ]; then 
+if [ -z "$(ls $bin_dir)" ]; then 
   echo "bin not found, downloading..."
   cd $bin_dir
-  if [ "$arch" == 'x64' ]; then
-    curl -o bin.tar.gz -L https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-linux-x64-2.304.0.tar.gz
-  else
-    echo "unsupported arch: $arch"
-    exit 1
-  fi
+  curl -o bin.tar.gz -L https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-linux-x64-2.304.0.tar.gz
 fi
 
 # if token is not empty, that mean we want to setup a new folder
