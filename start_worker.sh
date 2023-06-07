@@ -16,6 +16,7 @@ if [ ! -d $bin_dir ]; then
 fi
 
 if [ -z "$(ls -l $bin_dir)" ]; then 
+  echo "bin not found, downloading..."
   cd $bin_dir
   if [ "$arch" == 'x64' ]; then
     curl -o bin.tar.gz -L https://github.com/actions/runner/releases/download/v2.304.0/actions-runner-linux-x64-2.304.0.tar.gz
