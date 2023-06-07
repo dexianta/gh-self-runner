@@ -2,11 +2,11 @@
 name=$1
 token=$2
 
+docker kill $name; docker rm $name
 set -e
 arch=$(uname -m | sed 's/x86_64/x64/')
 git_root=$(git rev-parse --show-toplevel)
 dir="$git_root/runners/$name"
-docker kill $name && docker rm $name
 echo "$dir"
 
 # if token is not empty, that mean we want to setup a new folder
