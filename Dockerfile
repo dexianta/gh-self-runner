@@ -30,6 +30,7 @@ RUN if [ "$arch" = 'x64' ]; then \
 
 ENV PATH $PATH:/usr/local/go/bin
 ENV PATH $PATH:$HOME/go/bin
+ENV PATH $PATH:$(go env PATH)/bin
 
 RUN go version
 
