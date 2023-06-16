@@ -30,7 +30,6 @@ RUN if [ "$arch" = 'x64' ]; then \
 
 ENV PATH $PATH:/usr/local/go/bin
 ENV PATH $PATH:$HOME/go/bin
-ENV PATH $PATH:$(go env PATH)/bin
 
 RUN go version
 
@@ -39,7 +38,7 @@ RUN go version
 ######################
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # binary will be $(go env GOPATH)/bin/golangci-lint
-RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.53.3 && golangci-lint --version
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/go/bin v1.53.3 && golangci-lint --version
 
 ######################
 ## entrypoint
