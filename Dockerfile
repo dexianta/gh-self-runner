@@ -37,8 +37,9 @@ RUN go version
 ######################
 ## node
 ######################
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-RUN nvm install 16
+ENV NVM_DIR /root/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash 
+RUN . "$NVM_DIR/nvm.sh" && nvm install 16
 RUN node -v
 
 
