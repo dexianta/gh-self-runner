@@ -16,13 +16,13 @@ ENV arch=$arch
 ## golang
 ######################
 RUN if [ "$arch" = 'x64' ]; then \
-        wget https://go.dev/dl/go1.20.4.linux-amd64.tar.gz \
+        wget https://go.dev/dl/go1.22.3.linux-amd64.tar.gz \
         && rm -rf /usr/local/go \
-        && tar -C /usr/local -xzf go1.20.4.linux-amd64.tar.gz; \
+        && tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz; \
     elif [ "$arch" = 'arm64' ]; then \
-        wget https://go.dev/dl/go1.20.4.linux-arm64.tar.gz \
+        wget https://go.dev/dl/go1.22.3.linux-arm64.tar.gz \
         && rm -rf /usr/local/go \
-        && tar -C /usr/local -xzf go1.20.4.linux-arm64.tar.gz; \
+        && tar -C /usr/local -xzf go1.22.3.linux-arm64.tar.gz; \
     else \
       echo "invalid arch";\
       exit 1;\
@@ -48,7 +48,7 @@ RUN node -v
 ######################
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # binary will be $(go env GOPATH)/bin/golangci-lint
-RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/go/bin v1.53.3 && golangci-lint --version
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/go/bin v1.58.2 && golangci-lint --version
 
 
 
